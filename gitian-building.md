@@ -1,9 +1,9 @@
 Gitian building
 ================
 
-*Setup instructions for a Gitian build of Bitcoin Core using a VM or physical system.*
+*Setup instructions for a Gitian build of Chaincoin Core using a VM or physical system.*
 
-Gitian is the deterministic build process that is used to build the Bitcoin
+Gitian is the deterministic build process that is used to build the Chaincoin
 Core executables. It provides a way to be reasonably sure that the
 executables are really built from the git source. It also makes sure that
 the same, tested dependencies are used and statically built into the executable.
@@ -22,7 +22,7 @@ Table of Contents
 
 - [Preparing the Gitian builder host](#preparing-the-gitian-builder-host)
 - [Getting and building the inputs](#getting-and-building-the-inputs)
-- [Building Bitcoin Core](#building-bitcoin-core)
+- [Building Chaincoin Core](#building-chaincoin-core)
 - [Building an alternative repository](#building-an-alternative-repository)
 - [Signing externally](#signing-externally)
 - [Uploading signatures](#uploading-signatures)
@@ -55,7 +55,7 @@ On Debian you might have to compile a suitable version of lxc or you can use Ubu
 
 Non-Debian / Ubuntu, Manual and Offline Building
 ------------------------------------------------
-The instructions below use the automated script [gitian-build.py](https://github.com/bitcoin/bitcoin/blob/master/contrib/gitian-build.py) which only works in Debian/Ubuntu. For manual steps and instructions for fully offline signing, see [this guide](./gitian-building/gitian-building-manual.md).
+The instructions below use the automated script [gitian-build.py](https://github.com/chaincoin/chaincoin/blob/master/contrib/gitian-build.py) which only works in Debian/Ubuntu. For manual steps and instructions for fully offline signing, see [this guide](./gitian-building/gitian-building-manual.md).
 
 MacOS code signing
 ------------------
@@ -66,7 +66,7 @@ Initial Gitian Setup
 The `gitian-build.py` script will checkout different release tags, so it's best to copy it:
 
 ```bash
-cp bitcoin/contrib/gitian-build.py .
+cp chaincoin/contrib/gitian-build.py .
 ```
 
 You only need to do this once:
@@ -80,7 +80,7 @@ Where `satoshi` is your Github name and `0.16.0rc1` is the most recent tag (with
 In order to sign gitian builds on your host machine, which has your PGP key, fork the gitian.sigs repository and clone it on your host machine:
 
 ```
-git clone git@github.com:bitcoin-core/gitian.sigs.git
+git clone git@github.com:chaincoin/gitian.sigs.git
 git remote add satoshi git@github.com:satoshi/gitian.sigs.git
 ```
 
@@ -100,13 +100,13 @@ You need to copy these uncommited changes to your host machine, where you can si
 
 ```
 export NAME=satoshi
-gpg --output $VERSION-linux/$NAME/bitcoin-linux-0.16-build.assert.sig --detach-sign 0.16.0rc1-linux/$NAME/bitcoin-linux-0.16-build.assert 
-gpg --output $VERSION-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert.sig --detach-sign 0.16.0rc1-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert 
-gpg --output $VERSION-win-unsigned/$NAME/bitcoin-win-0.16-build.assert.sig --detach-sign 0.16.0rc1-win-unsigned/$NAME/bitcoin-win-0.16-build.assert 
+gpg --output $VERSION-linux/$NAME/chaincoin-linux-0.16-build.assert.sig --detach-sign 0.16.0rc1-linux/$NAME/chaincoin-linux-0.16-build.assert 
+gpg --output $VERSION-osx-unsigned/$NAME/chaincoin-osx-0.16-build.assert.sig --detach-sign 0.16.0rc1-osx-unsigned/$NAME/chaincoin-osx-0.16-build.assert 
+gpg --output $VERSION-win-unsigned/$NAME/chaincoin-win-0.16-build.assert.sig --detach-sign 0.16.0rc1-win-unsigned/$NAME/chaincoin-win-0.16-build.assert 
 ```
 
 Make a PR (both the `.assert` and `.assert.sig` files) to the
-[bitcoin-core/gitian.sigs](https://github.com/bitcoin-core/gitian.sigs/) repository:
+[chaincoin/gitian.sigs](https://github.com/chaincoin-core/gitian.sigs/) repository:
 
 ```
 git checkout -b 0.16.0rc1-not-codesigned
@@ -117,9 +117,9 @@ git push --set-upstream $NAME 0.16.0rc1
 You can also mail the files to Wladimir (laanwj@gmail.com) and he will commit them.
 
 ```bash
-    gpg --detach-sign ${VERSION}-linux/${SIGNER}/bitcoin-linux-*-build.assert
-    gpg --detach-sign ${VERSION}-win-unsigned/${SIGNER}/bitcoin-win-*-build.assert
-    gpg --detach-sign ${VERSION}-osx-unsigned/${SIGNER}/bitcoin-osx-*-build.assert
+    gpg --detach-sign ${VERSION}-linux/${SIGNER}/chaincoin-linux-*-build.assert
+    gpg --detach-sign ${VERSION}-win-unsigned/${SIGNER}/chaincoin-win-*-build.assert
+    gpg --detach-sign ${VERSION}-osx-unsigned/${SIGNER}/chaincoin-osx-*-build.assert
 ```
 
 You may have other .assert files as well (e.g. `signed` ones), in which case you should sign them too. You can see all of them by doing `ls ${VERSION}-*/${SIGNER}`.
